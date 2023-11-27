@@ -3,7 +3,7 @@ left to right direction
 skinparam actorstyle awesome
 actor Utente as u
 rectangle Calcolatrice{
-    usecase "Effettua un operazione" as UC1
+    usecase "Effettua un'operazione" as UC1
     usecase "Inserisci un numero nello Stack" as UC2
     (Input non valido) .> (UC2) : <<extends>>
     (Input non valido) .> (UC1) : <<extends>>
