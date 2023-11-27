@@ -1,21 +1,50 @@
 @startuml
 left to right direction
 skinparam actorstyle awesome
+
 actor Utente as u
+
 rectangle Calcolatrice{
-    usecase "Effettua un'operazione" as UC1
-    usecase "Inserisci un numero nello Stack" as UC2
-    (Input non valido) .> (UC2) : <<extends>>
-    (Input non valido) .> (UC1) : <<extends>>
-    (UC1) --.> (Operazioni matematiche su un operando) : <<include>>
-    (UC1) --.> (Operazioni matematiche su due operandi) : <<include>>
-    (UC1) --.> (Operazioni di manipolazione dello stack) : <<include>>
-    (UC1) --.> (Operazioni che riguardano le variabili supportate dalla calcolatrice) : <<include>>
-    (Operazioni matematiche su due operandi) <.- (Stack vuoto o con un solo elemento) : <<extends>>
-    (Operazioni matematiche su un operando) <.- (Stack vuoto) : <<extends>>
-    (Operazioni di manipolazione dello stack) <.- (Stack vuoto o non sufficiaentemente popolato \n per le operazioni di "dup", "swap", "over") : <<extends>>
-    (Operazioni che riguardano le variabili supportate dalla calcolatrice) <.- (Stack vuoto o variabile scelta \n non inizializzata) : <<extends>>
+    usecase "Effettua un'operazione" as EFFO
+    usecase "Inserisci un numero nello Stack" as INS    
+    usecase "Operazioni matematiche su un operando" as OPM1
+    usecase "Operazioni matematiche su due operandi" as OPM2
+    usecase "Input non valido" as INV
+    usecase "Stack vuoto" as STV
+    usecase "Divisione per zero" as DPZ
+    usecase "Un solo elemento presente nello Stack" as E1ST
+    usecase "Variabile scelta \n non inizializzata" as VSNI
+    usecase "Operazione ">x"" as OMGX
+    usecase "Operazione "<x"" as OMNX
+    usecase "Operazione "Clear"" as OC
+    usecase "Operazioni: "+x"/"-x"" as OPMX
+    usecase "Operazioni: "Dup"/"Drop"" as ODD
+    usecase "Operazioni: "Over"/"Swap"" as OOS
+
+    (EFFO) --.> (OPM1) : <<include>>
+    (EFFO) --.> (OPM2) : <<include>>
+    (EFFO) --.> (OOS) : <<include>>
+    (EFFO) --.> (ODD) : <<include>>
+    (EFFO) --.> (OC) : <<include>>
+    (EFFO) --.> (OPMX) : <<include>>
+    (EFFO) --.> (OMGX) : <<include>>
+    (EFFO) --.> (OMNX) : <<include>>
+    (INV) .> (INS) : <<extends>>
+    (INV) .> (EFFO) : <<extends>>
+    (OPM2) <.- (E1ST) : <<extends>>
+    (OPM1) <.- (STV) : <<extends>>
+    (OPM2) <. (DPZ) : <<extends>>
+    (OMGX) <.- (STV) : <<extends>>
+    (OPMX) <. (STV) : <<extends>>
+    (ODD) <.- (STV) : <<extends>>
+    (OPM2) <.- (STV) : <<extends>>
+    (OOS) <.- (E1ST) : <<extends>>
+    (OOS) <.- (STV) : <<extends>>
+    (OPMX) <.- (VSNI) : <<extends>>
+    (OMNX) <.- (VSNI) : <<extends>>
 }
-u -- UC1
-u -- UC2
+
+u -- EFFO
+u -- INS
+
 @enduml
