@@ -1,0 +1,122 @@
+@startuml
+
+top to bottom direction
+
+package it.unisa.diem.ing_s.calculator{
+    
+    class Calculator{
+        + void start()
+        + void {static} main
+    }
+
+    class Stack{
+        - Stack<ComplexNumber> stack
+        + Stack()
+        + void checkOperation(String operatore)
+        + void addNumToStack(ComplexNumber c)
+        + ComplexNumber removeNum()
+        + void clear()
+        + void drop()
+        + void dup()
+        + void swap()
+        + void over()
+    }
+
+    class Variables{
+        - ComplexNumber var[]
+        - Stack <ComplexNumber> stack
+        + Variables(Stack <ComplexNumber> stack)
+        + void saveVar(char let)
+        + void saveNum(char let)
+        + void addVar(char let)
+        + void subVar(char let)
+    }
+
+    class ComplexNumber{
+        - double real_part
+        - double imaginary_part
+        + ComplexNumber(double real_part)
+        + ComplexNumber(double real_part, double imaginary_part)
+        + ComplexNumber addComp(ComplexNumber n1, ComplexNumber n2)
+        + ComplexNumber subComp(ComplexNumber n1, ComplexNumber n2)
+        + ComplexNumber multComp(ComplexNumber n1, ComplexNumber n2)
+        + ComplexNumber divComp(ComplexNumber n1, ComplexNumber n2)
+        + ComplexNumber sqrtComp(ComplexNumber n1)
+        + ComplexNumber signInversionComp(ComplexNumber n1)
+    }
+
+    class CalculatorController{
+        - CalculatorView view
+        + CalculatorController(CalculatorView view)
+        - void initButtonAction()
+        - void initBindings()
+        - void buttonPressed(ActionEvent e)
+    }
+    
+    class CalculatorView{
+        + Label stack
+        + Label variables
+        + Label display
+        + Button[] key
+        + final int CHARACTERS
+        + final int COLUMNS
+        + CalculatorView()
+        - void initButtons()
+        - void placeButtons()
+    }
+
+    class Application{
+    }
+
+    class VBox{
+    }
+}
+
+package it.unisa.diem.ing_s.exceptions{
+
+    class NotInitializedVarException{
+        + NotInitializedException()
+        + NotInitializedException(String msg)
+    }
+
+    class EmptyStackException{
+        + EmptyStackException()
+        + EmptyStackException(String msg)
+    }
+
+    class OneElementStackException{
+        + OneElementStackException()
+        + OneElementStackException(String msg)
+    }
+
+    class InvalidInputException{
+        + InvalidInputException()
+        + InvalidInputException(String msg)
+    }
+
+    class DivisionByZeroException{
+        + DivisionByZeroException()
+        + DivisionByZeroException(String msg)
+    }
+
+    class Exception{
+    }
+
+    NotInitializedVarException <-- Variables : throws
+    EmptyStackException <-- Variables : throws
+    EmptyStackException <-- Stack : throws
+    OneElementStackException <-- Stack : throws
+    OneElementStackException <-- ComplexNumber : throws
+    DivisionByZeroException <-- ComplexNumber : throws
+    InvalidInputException <-- CalculatorController : throws
+    
+    Application <|-- Calculator
+    VBox <|-- CalculatorView
+    Exception <|-- NotInitializedVarException
+    Exception <|-- EmptyStackException
+    Exception <|-- OneElementStackException
+    Exception <|-- InvalidInputException
+    Exception <|-- DivisionByZeroException
+}
+
+@enduml
