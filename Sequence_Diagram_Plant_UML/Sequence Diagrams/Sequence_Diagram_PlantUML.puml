@@ -1,0 +1,97 @@
+@startuml
+
+skinparam actorstyle awesome
+
+actor User as u
+participant User_Interface as ui
+participant Stack as s
+participant Complex_Number as cn
+participant Variables as v
+participant Exceptions_Involving_The_Stack as ste
+participant Not_Initialized_Var_Exception as nive
+participant Division_By_Zero_Exception as dbze
+participant Invalid_Input_Exception as iie
+
+u -> ui : Insert a number \n or an operation
+activate ui
+
+loop
+ui -> s : buttonPressed()
+    activate s
+
+alt "Insert invalid input"
+
+    ui -> iie : Throw
+    activate iie
+    iie -> ui : Show the type of error on the text area
+    deactivate iie
+
+else "Insert valid input"
+
+    alt "If the input is a mathematic \n operand or a number"
+        s -> cn : Do checkOperation()
+        activate cn
+        deactivate s
+        
+        alt "If there is an error \n involving the stack"
+            cn -> ste : Throw
+            activate ste
+            ste -> ui : Show the type of error on the text area
+            deactivate ste
+        else "if a number is divided by 0"
+            cn -> dbze : throw
+            activate dbze
+            dbze -> ui : Show the type of error on the text area
+            deactivate dbze
+        end
+        
+        cn -> s : Do addNum() or subNum() etc.
+        activate s
+        deactivate s
+        deactivate cn
+
+    else "If the input \n involves variables"
+        s -> v : Do checkOperation()
+        activate s
+        activate v
+        deactivate s
+
+        v -> v : Do saveVar(char let) \n or saveNum(char let) etc.
+
+        alt "If there is an error \n involving the stack"
+            v -> ste : Throw
+            activate ste
+            ste -> ui : Show the type of error on the text area
+            deactivate ste
+        else "if the user wants to use \n not initialized variable"
+            v -> nive : Throw
+            deactivate v
+            activate nive
+            nive -> ui : Show the type of error on the text area
+            deactivate nive
+        end
+
+    else "If the input involves \n stack manipulation"
+        s -> s : checkOperation()
+
+        s -> s : Do clear(), drop(), etc.
+
+        alt "If there is an error \n involving the stack"
+            s -> ste : Throw
+            activate s
+            activate ste
+            ste -> ui : Show the type of error on the text area
+            deactivate ste
+        end
+
+        s -> ui : Update stack
+        deactivate s
+    
+    end
+
+ui -> u : Show updated stack
+deactivate ui
+end
+end
+
+@enduml
