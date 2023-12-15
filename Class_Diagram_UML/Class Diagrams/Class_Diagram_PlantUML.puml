@@ -2,34 +2,39 @@
 
 top to bottom direction
 
-package it.unisa.diem.ing_s.calculator{
+package com.mycompany.progetto_ing_soft.app{
     
     class Calculator{
         + void start()
         + void {static} main
     }
 
-    class Stack{
+    class StackComplex{
         - Stack<ComplexNumber> stack
-        + Stack()
-        + void checkOperation(String operatore)
+        - Variables var
+        + StackComplex()
+        + void checkOperation(String operator, GridPane variables_pane)
         + void addNumToStack(ComplexNumber c)
         + ComplexNumber removeNum()
+        + void topNum()
         + void clear()
         + void drop()
         + void dup()
         + void swap()
         + void over()
+        + Stack<ComplexNumber> getStack()
+        + Variables getVariables()
     }
 
     class Variables{
         - ComplexNumber var[]
-        - Stack <ComplexNumber> stack
-        + Variables(Stack <ComplexNumber> stack)
+        - StackComplex stack
+        + Variables(StackComplex stack)
         + void saveVar(char let)
         + void saveNum(char let)
         + void addVar(char let)
         + void subVar(char let)
+        + void getVar(char let)
     }
 
     class ComplexNumber{
@@ -43,45 +48,38 @@ package it.unisa.diem.ing_s.calculator{
         + ComplexNumber divComp(ComplexNumber n1, ComplexNumber n2)
         + ComplexNumber sqrtComp(ComplexNumber n1)
         + ComplexNumber signInversionComp(ComplexNumber n1)
+        + String toString()
+        + double getReal_part()
+        + double getImmaginary_part()
+        + boolean equals()
+        + int hashCode()
     }
 
     class CalculatorController{
-        - CalculatorView view
-        + CalculatorController(CalculatorView view)
-        - void initButtonAction()
-        - void initBindings()
+        - ObservableList<ComplexNumber> stackView
+        - StackComplex implementedStack
+        - @FXML ListView<ComplexNumber> stack
+        - @FXML GridPane variables
+        - @FXML Label text
+        - @FXML Label error
+        + void initialize(URL url, ResourceBundle rb)
         - void buttonPressed(ActionEvent e)
-    }
-    
-    class CalculatorView{
-        + Label stack
-        + Label variables
-        + Label display
-        + Button[] key
-        + final int CHARACTERS
-        + final int COLUMNS
-        + CalculatorView()
-        - void initButtons()
-        - void placeButtons()
     }
 
     class Application{
     }
-
-    class VBox{
-    }
 }
 
-package it.unisa.diem.ing_s.exceptions{
+package com.mycompany.progetto_ing_soft.exceptions{
 
     class NotInitializedVarException{
         + NotInitializedException()
         + NotInitializedException(String msg)
     }
 
-    class EmptyStackException{
-        + EmptyStackException()
-        + EmptyStackException(String msg)
+    class StackEmptyException{
+        + StackEmptyException()
+        + StackEmptyException(String msg)
     }
 
     class OneElementStackException{
@@ -102,18 +100,16 @@ package it.unisa.diem.ing_s.exceptions{
     class Exception{
     }
 
-    NotInitializedVarException <-- Variables : throws
-    EmptyStackException <-- Variables : throws
-    EmptyStackException <-- Stack : throws
-    OneElementStackException <-- Stack : throws
-    OneElementStackException <-- ComplexNumber : throws
-    DivisionByZeroException <-- ComplexNumber : throws
+    NotInitializedVarException <--- StackComplex : throws
+    StackEmptyException <--- StackComplex : throws
+    StackEmptyException <--- StackComplex : throws
+    OneElementStackException <--- StackComplex : throws
+    DivisionByZeroException <--- StackComplex : throws
     InvalidInputException <-- CalculatorController : throws
     
     Application <|-- Calculator
-    VBox <|-- CalculatorView
     Exception <|-- NotInitializedVarException
-    Exception <|-- EmptyStackException
+    Exception <|-- StackEmptyException
     Exception <|-- OneElementStackException
     Exception <|-- InvalidInputException
     Exception <|-- DivisionByZeroException
